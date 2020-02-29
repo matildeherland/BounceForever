@@ -56,4 +56,9 @@ public class ScoreManager : MonoBehaviour
         score.text.text = score.value.ToString();
         coins.text.text = coins.value.ToString();
     }
+
+    public int GetScore()
+    {
+        return score.value;
+    }
 }

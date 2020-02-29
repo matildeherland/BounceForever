@@ -32,6 +32,8 @@ public class ObjectPooler : MonoBehaviour
     public Dictionary<PlatformType, Queue<GameObject>> platformDictionary;
 
     [SerializeField] private GameObject gameManager;
+    [SerializeField] private float chanceToSpawnCoin;
+    [SerializeField] private float chanceToSpawnPerfect;
 
     void Start()
     {
@@ -52,7 +54,7 @@ public class ObjectPooler : MonoBehaviour
         }
     }
 
-    public GameObject PlatformToSpawn(PlatformType tag, Vector3 position, Quaternion rotation, int spawnNumber, bool spawnCoin)
+    public GameObject PlatformToSpawn(PlatformType tag, Vector3 position, Quaternion rotation, int spawnNumber)
     {
         if (!platformDictionary.ContainsKey(tag))
         {
@@ -66,9 +68,14 @@ public class ObjectPooler : MonoBehaviour
         platformToSpawn.transform.rotation = rotation;
         platformToSpawn.GetComponent<Platform>().platformNumber = spawnNumber;
 
-        if (spawnCoin)
+        float random = Random.Range(0.0f, 1.0f);
+        if (random < chanceToSpawnCoin)
         {
             platformToSpawn.GetComponent<Platform>().EnableCoin();
+        }
+        else if (random > chanceToSpawnPerfect)
+        {
+            platformToSpawn.GetComponent<Platform>().EnablePerfectZone();
         }
 
         return platformToSpawn;

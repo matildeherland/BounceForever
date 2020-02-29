@@ -11,15 +11,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] bool inverseControls;
     [SerializeField] UIManager UIManager;
     [SerializeField] ScoreManager scoreManager;
+    [SerializeField] TextMeshProUGUI highScoreText;
+    [SerializeField] TextMeshProUGUI currentScoreText;
 
     private bool isGameActive;
     private float horizontalInput;
     private Vector3 lastMousePos;
+    private int highScore;
+    private string highScoreKey = "HighScore";
 
     void Start()
     {
         UIManager.EnableScreen(ScreenEnum.TITLESCREEN, true);
+        UIManager.EnableScreen(ScreenEnum.CURRENCYBAR, true);
         scoreManager.ResetValues();
+        highScore = PlayerPrefs.GetInt(highScoreKey, 0);
     }
 
     void Update()
@@ -48,9 +54,24 @@ public class GameManager : MonoBehaviour
     }
 
     public void GameOver()
-    {
+    {        
         isGameOver = true;
+        if (scoreManager.GetScore() > PlayerPrefs.GetInt(highScoreKey, 0))
+        {
+            PlayerPrefs.SetInt(highScoreKey, scoreManager.GetScore());
+            PlayerPrefs.Save();
+            highScore = PlayerPrefs.GetInt(highScoreKey, 0);
+            highScoreText.SetText("New Best: " + highScore.ToString() + "!");
+        }
+        else
+        {
+            highScoreText.SetText("Best: " + highScore.ToString());
+            currentScoreText.SetText("Score: " + scoreManager.GetScore().ToString());
+            currentScoreText.gameObject.SetActive(true);
+        }       
+        
         UIManager.EnableScreen(ScreenEnum.HUD, false);
         UIManager.EnableScreen(ScreenEnum.GAMEOVERSCREEN, true);
+
     }
 }

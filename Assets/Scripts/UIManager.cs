@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public EnumPanel[] UIscreens;
+    public EnumPanel[] UiScreens;
 
     void Start()
     {
@@ -13,7 +13,7 @@ public class UIManager : MonoBehaviour
 
     public void EnableScreen(ScreenEnum screen, bool enable)
     {
-        foreach (EnumPanel UIscreen in UIscreens)
+        foreach (EnumPanel UIscreen in UiScreens)
         {
             if (UIscreen.ScreenType == screen)
             {

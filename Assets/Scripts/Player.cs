@@ -8,11 +8,14 @@ public class Player : MonoBehaviour
     [SerializeField] private CameraController mainCamera;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private ScoreManager scoreManager;
+    [SerializeField] private ParticleSystem coinCollectEffect;
 
     private int currentPlatform;
     private Rigidbody playerRb;
     private Collider collider;
-    
+    private int scoreToAdd = 1;
+
+
     private float deathOffset = 5;
 
     // Start is called before the first frame update
@@ -51,11 +54,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        /*if (other.gameObject.CompareTag("PlatformTrigger"))
-        {
-            mainCamera.MoveCamera(other.gameObject.transform.position);
-        }*/
-
         if (other.GetComponent<Platform>() != null)
         {
             if (playerRb.velocity.y <= 0)
@@ -66,13 +64,19 @@ public class Player : MonoBehaviour
             if (currentPlatform != other.GetComponent<Platform>().platformNumber)
             {
                 mainCamera.MoveCamera(other.gameObject.transform.position);
-                scoreManager.AddToType(Scores.SCORE, 1);
+                scoreManager.AddToType(Scores.SCORE, scoreToAdd);
             }
         }
         else if (other.GetComponent<CoinPickup>() != null)
         {
             scoreManager.AddToType(Scores.COINS, 1);
+            Instantiate(coinCollectEffect, other.transform.position, coinCollectEffect.transform.rotation);
             other.gameObject.SetActive(false);
+        }
+        else if (other.GetComponent<PerfectZone>() != null)
+        {
+            other.GetComponent<PerfectZone>().ActivateSelf();
+            scoreToAdd++;
         }
     }
 

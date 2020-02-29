@@ -8,7 +8,6 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private GameObject gameManager;
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private Vector2 spawnRotation;
-    [SerializeField] private float chanceToSpawnCoin;
 
     private int spawnHeight = 3;
     private int spawnCounter = 1;
@@ -21,12 +20,6 @@ public class SpawnManager : MonoBehaviour
     void Start()
     {
         InstantiatePlatforms(10);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {        
-
     }
 
     public void InstantiatePlatforms(int platformsToSpawn)
@@ -44,13 +37,8 @@ public class SpawnManager : MonoBehaviour
             }
 
             PlatformType randomPlatform = eligibleTypes[Random.Range(0, eligibleTypes.Count)];
-            float spawnCoinRandom = Random.Range(0.0f, 1.0f);
-            bool spawnCoin = false;
-            if (spawnCoinRandom < chanceToSpawnCoin)
-            {
-                spawnCoin = true;
-            }
-            ObjectPooler.Instance.PlatformToSpawn(randomPlatform, new Vector3(0, spawnHeight * spawnCounter, 0), Quaternion.Euler(new Vector3(0, Random.Range(spawnRotation.x, spawnRotation.y), 0)), spawnCounter, spawnCoin);
+            
+            ObjectPooler.Instance.PlatformToSpawn(randomPlatform, new Vector3(0, spawnHeight * spawnCounter, 0), Quaternion.Euler(new Vector3(0, Random.Range(spawnRotation.x, spawnRotation.y), 0)), spawnCounter);
 
             spawnCounter++;
         }

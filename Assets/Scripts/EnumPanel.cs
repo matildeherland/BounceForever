@@ -8,6 +8,7 @@ public enum ScreenEnum
     TITLESCREEN,
     HUD,
     GAMEOVERSCREEN,
+    CURRENCYBAR,
 }
 
 public class EnumPanel : MonoBehaviour
